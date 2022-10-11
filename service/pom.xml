@@ -11,17 +11,19 @@
 
     <artifactId>service</artifactId>
 
-    <dependencies>
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.example</groupId>-->
-        <!--            <artifactId>common</artifactId>-->
-        <!--        </dependency>-->
-<!--        Я сделаю эту зависимомть на этой неделе-->
-
+<dependencies>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
         </dependency>
 
         <dependency>
@@ -35,17 +37,14 @@
             <artifactId>assertj-core</artifactId>
         </dependency>
 
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.h2database/h2 &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.h2database</groupId>-->
-<!--            <artifactId>h2</artifactId>-->
-<!--        </dependency>-->
-
-        <!-- https://mvnrepository.com/artifact/org.testcontainers/postgresql -->
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
         </dependency>
 
         <dependency>

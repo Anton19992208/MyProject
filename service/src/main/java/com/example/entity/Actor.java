@@ -1,15 +1,32 @@
 package com.example.entity;
 
-import com.example.converter.BirthdayConverter;
-import lombok.*;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(of = "id")
+@ToString(exclude = "movieActors")
+@EqualsAndHashCode(of = "name")
 @Builder
 @Entity
 public class Actor {
@@ -22,11 +39,16 @@ public class Actor {
 
     private String surname;
 
-    @Convert(converter = BirthdayConverter.class)
-    @Column(name = "age")
-    private Birthday birthdate;
+    @Column(name = "birth_date")
+    private LocalDate birthdate;
 
-    @ManyToOne()
-    private Movie movie;
+    @Builder.Default
+    @OneToMany(mappedBy = "actor")
+    private List<MovieActor> movieActors = new ArrayList<>();
+
+    public String name() {
+        return name;
+    }
+
 
 }

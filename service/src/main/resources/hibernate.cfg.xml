@@ -16,6 +16,7 @@
     <mapping class="com.example.entity.Actor"/>
     <mapping class="com.example.entity.Review"/>
     <mapping class="com.example.entity.User"/>
+    <mapping class="com.example.entity.MovieActor"/>
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
   </session-factory>

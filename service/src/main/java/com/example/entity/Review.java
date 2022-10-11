@@ -5,8 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
+
 
 @Data
 @AllArgsConstructor
@@ -23,14 +30,17 @@ public class Review {
 
     private Integer grade;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Movie movie;
 
-    @OneToOne
+    @ManyToOne
     private User user;
 
-    public void setUser(User user){
-        user.setReview(this);
-        this.user = user;
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+        this.movie.getReviews().add(this);
     }
+
+
 }

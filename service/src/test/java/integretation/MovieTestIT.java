@@ -1,82 +1,105 @@
 package integretation;
 
+import com.example.entity.Actor;
 import com.example.entity.Movie;
+import com.example.entity.MovieActor;
+import com.example.entity.Review;
 import lombok.Cleanup;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import util.HibernateTestUtil;
 import util.TestUtil;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Collections;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
+
+
+@TestInstance(PER_CLASS)
 public class MovieTestIT {
 
-    @Test
-    void shouldCreateMovie(){
+    private final SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
 
-        @Cleanup SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
+    @Test
+    void shouldCreateMovie() {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
         Movie movie = TestUtil.getMovie();
-//        Actor actor = TestUtil.getActor();
-//        movie.addActor(actor);
+        Actor actor = TestUtil.getActor();
+        MovieActor movieActor = TestUtil.getMovieActor();
+        session.save(actor);
         session.save(movie);
-//        User user = TestUtil.getUser();
-//        Review review = TestUtil.getReview();
-//        review.setUser(user);
-//        session.save(review);
+        movieActor.setMovie(movie);
+        movieActor.setActor(actor);
 
-        session.getTransaction().commit();
+        session.save(movieActor);
 
-        assertThat(movie).isNotNull();
+        assertThat(movieActor.getId()).isNotNull();
+        session.getTransaction().rollback();
+
     }
 
     @Test
-    void shouldDeleteMovie(){
-        @Cleanup SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
+    void shouldDeleteMovie() {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
         Movie movie = TestUtil.getMovie();
         session.save(movie);
-        Movie movie1 = session.find(Movie.class, 1L);
+        session.flush();
+        session.clear();
 
-        session.delete(movie1);
-        session.getTransaction().commit();
+        Movie movieToDelete = session.get(Movie.class, movie.getId());
+        session.delete(movieToDelete);
 
-        assertThat(session.find(Movie.class, movie1.getId())).isNull();
+        assertThat(session.find(Movie.class, movieToDelete.getId())).isNull();
+        session.getTransaction().rollback();
+
     }
 
     @Test
-    void shouldUpdateMovie(){
-        @Cleanup SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
+    void shouldUpdateMovie() {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
         Movie movie = TestUtil.getMovie();
+        Actor actor = TestUtil.getActor();
+        Actor newActor = TestUtil.getNewActor();
+        MovieActor movieActor = TestUtil.getMovieActor();
+        session.save(newActor);
+        session.save(actor);
         session.save(movie);
+        movieActor.setActor(actor);
+        movieActor.setMovie(movie);
+        session.save(movieActor);
 
         movie.setName("PulpFiction2");
         movie.setCountry("UN");
-        session.update(movie);
+        movieActor.setActor(newActor);
         session.flush();
         session.clear();
-        Movie movie1 = session.find(Movie.class, movie.getId());
 
-        session.getTransaction().commit();
-        assertThat(movie).isEqualTo(movie1);
+        Movie updatedMovie = session.get(Movie.class, actor.getId());
+        assertThat(movie.getId()).isEqualTo(updatedMovie.getId());
+        session.getTransaction().rollback();
+
     }
 
     @Test
-    void shouldGetMovie(){
-        @Cleanup SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
+    void shouldGetMovie() {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
         Movie movie = TestUtil.getMovie();
         session.save(movie);
+        session.flush();
+        session.clear();
 
-        var movieAfterGet = session.get(Movie.class, 1L);
+        var movieAfterGet = session.get(Movie.class, movie.getId());
 
-        session.getTransaction().commit();
-        assertThat(movie).isEqualTo(movieAfterGet);
+        assertThat(movie.getId()).isEqualTo(movieAfterGet.getId());
+        session.getTransaction().rollback();
+
     }
 }

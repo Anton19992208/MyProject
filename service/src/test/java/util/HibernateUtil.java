@@ -8,15 +8,17 @@ import org.hibernate.cfg.Configuration;
 @UtilityClass
 public class HibernateUtil {
 
-    public static SessionFactory buildSessionFactory(){
-        Configuration configuration = buildConfiguration();
-        configuration.configure();
-        return configuration.buildSessionFactory();
+    public static SessionFactory buildSessionFactory() {
+        return buildConfiguration()
+                .configure()
+                .buildSessionFactory();
     }
 
     public static Configuration buildConfiguration() {
         Configuration configuration = new Configuration();
         configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
         return configuration;
+
+
     }
 }
