@@ -48,8 +48,8 @@ public class TestUtil {
 
     public static MovieActor getMovieActor() {
         return MovieActor.builder()
-                .addedAt(LocalDate.of(2020, 12, 12))
-                .addedBy("Karl Smith")
+                .createdAt(LocalDate.of(2020, 12, 12))
+                .createdBy("Karl Smith")
                 .build();
     }
 

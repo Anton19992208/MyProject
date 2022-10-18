@@ -65,15 +65,15 @@ public class MovieDao {
                 .list();
     }
 
-    public List<MovieActor> findAllActorsByMovieName(Session session, String movieName) {
+    public List<Actor> findAllActorsByMovieName(Session session, String movieName) {
         var cb = session.getCriteriaBuilder();
 
-        var criteria = cb.createQuery(MovieActor.class);
-        var movieActors = criteria.from(MovieActor.class);
+        var criteria = cb.createQuery(Actor.class);
+        var actors = criteria.from(Actor.class);
+        var movieActors = actors.join(Actor_.movieActors);
         var movie = movieActors.join(MovieActor_.movie);
 
-
-        criteria.select(movieActors).where(
+        criteria.select(actors).where(
                 cb.equal(movie.get(Movie_.name.getName()), movieName)
         );
 

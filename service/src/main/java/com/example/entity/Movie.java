@@ -33,10 +33,10 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString(exclude = {"movie", "review"})
+@ToString(exclude = {"movie", "review", "actor"})
 @EqualsAndHashCode(of = "name")
 @Entity
-public class Movie {
+public class Movie implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,7 +59,7 @@ public class Movie {
     private Genre genre;
 
     @Builder.Default
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "movie")
     private List<Review> reviews = new ArrayList<>();
 
     public String name() {

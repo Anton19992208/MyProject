@@ -40,9 +40,9 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_METHOD;
 
-@TestInstance(PER_CLASS)
+@TestInstance(PER_METHOD)
 public class ActorTestIT {
 
     private final SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
@@ -96,10 +96,12 @@ public class ActorTestIT {
         session.save(actor);
         movieActor.setActor(actor);
         movieActor.setMovie(movie);
+        session.save(movieActor);
 
         actor.setName("Charles");
         actor.setSurname("Windsor");
         movieActor.setMovie(newMovie);
+        session.update(actor);
         session.flush();
         session.clear();
         Actor actor1 = session.get(Actor.class, actor.getId());

@@ -110,10 +110,10 @@
                                 <goal>jpa-export</goal>
                             </goals>
                             <configuration>
-                                <targetFolder>com.example.entity</targetFolder>
+                                <targetFolder>target/generated-sources/java</targetFolder>
                                 <!-- You have to pass your entity package here -->
                                 <packages>
-                                    <package>com.example.querydsl.entity</package>
+                                    <package>com.example.entity</package>
                                 </packages>
                             </configuration>
                         </execution>

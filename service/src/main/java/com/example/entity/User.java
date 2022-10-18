@@ -20,7 +20,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "idk_user")
-public class User {
+public class User implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

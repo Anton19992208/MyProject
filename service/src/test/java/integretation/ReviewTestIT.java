@@ -14,9 +14,9 @@ import util.HibernateUtil;
 import util.TestUtil;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_METHOD;
 
-@TestInstance(PER_CLASS)
+@TestInstance(PER_METHOD)
 public class ReviewTestIT {
 
     private final SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();

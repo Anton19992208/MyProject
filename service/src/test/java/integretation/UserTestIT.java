@@ -11,9 +11,9 @@ import util.HibernateTestUtil;
 import util.TestUtil;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_METHOD;
 
-@TestInstance(PER_CLASS)
+@TestInstance(PER_METHOD)
 public class UserTestIT {
     private final SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
 
@@ -65,7 +65,7 @@ public class UserTestIT {
         user.setEmail("@2343com");
         user.setName("Jorge");
         user.addReview(newReview);
-        session.save(user);
+        session.update(user);
         session.flush();
         session.clear();
         User user1 = session.get(User.class, user.getId());

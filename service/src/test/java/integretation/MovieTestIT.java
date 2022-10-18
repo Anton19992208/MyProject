@@ -16,10 +16,10 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_METHOD;
 
 
-@TestInstance(PER_CLASS)
+@TestInstance(PER_METHOD)
 public class MovieTestIT {
 
     private final SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
@@ -55,7 +55,7 @@ public class MovieTestIT {
         Movie movieToDelete = session.get(Movie.class, movie.getId());
         session.delete(movieToDelete);
 
-        assertThat(session.find(Movie.class, movieToDelete.getId())).isNull();
+        assertThat(movieToDelete.getId()).isNull();
         session.getTransaction().rollback();
 
     }
@@ -69,8 +69,8 @@ public class MovieTestIT {
         Actor newActor = TestUtil.getNewActor();
         MovieActor movieActor = TestUtil.getMovieActor();
         session.save(newActor);
-        session.save(actor);
         session.save(movie);
+        session.save(actor);
         movieActor.setActor(actor);
         movieActor.setMovie(movie);
         session.save(movieActor);
@@ -78,10 +78,11 @@ public class MovieTestIT {
         movie.setName("PulpFiction2");
         movie.setCountry("UN");
         movieActor.setActor(newActor);
+        session.update(movie);
         session.flush();
         session.clear();
+        Movie updatedMovie = session.get(Movie.class, movie.getId());
 
-        Movie updatedMovie = session.get(Movie.class, actor.getId());
         assertThat(movie.getId()).isEqualTo(updatedMovie.getId());
         session.getTransaction().rollback();
 

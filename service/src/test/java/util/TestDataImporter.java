@@ -22,11 +22,11 @@ public class TestDataImporter {
     public void importData(SessionFactory sessionFactory) {
         @Cleanup Session session = sessionFactory.openSession();
 
-        Actor anton = saveActor(session, "Anton", "Kabernik",
+        Actor nik = saveActor(session, "Nikita", "Gurinovich",
                 LocalDate.of(1999, 2, 8));
-        Actor ivan = saveActor(session, "Petr", "Dorov",
+        Actor ivan = saveActor(session, "Petr", "Ivanov",
                 LocalDate.of(1969, 6, 8));
-        Actor petr = saveActor(session, "Petr", "Korov",
+        Actor petr = saveActor(session, "Petr", "Petrov",
                 LocalDate.of(1949, 4, 8));
 
         Movie kingdomOfHeaven = saveMovie(session, "KingdomOfHeaven",
@@ -34,7 +34,9 @@ public class TestDataImporter {
         Movie sinCity = saveMovie(session, "SinCity",
                 LocalDate.of(1994, 11, 11), "2");
         Movie russianMovie = saveMovie(session, "RussianMovie",
-                LocalDate.of(1990, 10, 10), "3");
+                LocalDate.of(1990, 10, 10),  "3");
+
+        MovieActor movieActor1 = saveMovieActor(session, nik, kingdomOfHeaven);
 
 
         User bernySanders = saveUser(session, "Berny", "Sanders",
@@ -115,7 +117,7 @@ public class TestDataImporter {
         return user;
     }
 
-    private void saveReview(Session session,
+    private Review saveReview(Session session,
                             String text,
                             int grade,
                             User user,
@@ -127,5 +129,14 @@ public class TestDataImporter {
                 .movie(movie)
                 .build();
         session.save(review);
+        return review;
+    }
+    private MovieActor saveMovieActor(Session session, Actor actor, Movie movie){
+        MovieActor movieActor = MovieActor.builder()
+                .actor(actor)
+                .movie(movie)
+                .build();
+        session.save(movieActor);
+        return movieActor;
     }
 }

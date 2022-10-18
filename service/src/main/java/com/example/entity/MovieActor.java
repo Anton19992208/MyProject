@@ -36,7 +36,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode(of = "movie")
 @Builder
 @Entity
-public class MovieActor {
+public class MovieActor implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,9 +48,9 @@ public class MovieActor {
     @ManyToOne(fetch = FetchType.LAZY)
     private Actor actor;
 
-    private LocalDate addedAt;
+    private LocalDate createdAt;
 
-    private String addedBy;
+    private String createdBy;
 
     public void setActor(Actor actor) {
         this.actor = actor;
@@ -62,7 +62,4 @@ public class MovieActor {
         this.movie.getMovieActors().add(this);
     }
 
-    public String actorName() {
-        return getActor().name();
-    }
 }

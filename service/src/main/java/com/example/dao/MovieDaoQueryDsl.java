@@ -1,9 +1,8 @@
 package com.example.dao;
 
-import com.example.dto.MovieDto;
+import com.example.dto.ReviewFilter;
 import com.example.entity.Actor;
 import com.example.entity.Movie;
-import com.example.entity.MovieActor;
 import com.example.entity.Review;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -19,12 +18,11 @@ import static com.example.entity.QReview.review;
 import static com.example.entity.QUser.user;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class MovieDaoDsl {
+public class MovieDaoQueryDsl {
 
-    private static final MovieDaoDsl INSTANCE = new MovieDaoDsl();
+    private static final MovieDaoQueryDsl INSTANCE = new MovieDaoQueryDsl();
 
     public List<Movie> findAll(Session session) {
-
         return new JPAQuery<Movie>(session)
                 .select(movie)
                 .from(movie)
@@ -32,7 +30,6 @@ public class MovieDaoDsl {
     }
 
     public List<Movie> findByName(Session session, String name) {
-
         return new JPAQuery<Movie>(session)
                 .select(movie)
                 .from(movie)
@@ -42,7 +39,6 @@ public class MovieDaoDsl {
     }
 
     public List<Movie> findLimitedMoviesOrderedByReleaseDate(Session session, int limit) {
-
         return new JPAQuery<Movie>(session)
                 .select(movie)
                 .from(movie)
@@ -53,7 +49,6 @@ public class MovieDaoDsl {
     }
 
     public List<Actor> findAllActorsByMovieName(Session session, String movieName) {
-
         return new JPAQuery<Actor>(session)
                 .select(actor)
                 .from(movie)
@@ -63,21 +58,23 @@ public class MovieDaoDsl {
 
     }
 
-    public List<Review> findAllReviewByMovieName(Session session, String movieName) {
+    public List<Review> findAllReviewByMovieName(Session session, ReviewFilter filter) {
+        var predicate = QPredicate.builder()
+                .add(filter.getMovieName(), movie.name::eq)
+                .buildAnd();
 
         return new JPAQuery<Review>(session)
                 .select(review)
                 .from(review)
                 .join(review.user, user)
                 .join(review.movie, movie)
-                .where(movie.name.eq(movieName))
+                .where(predicate)
                 .orderBy(review.grade.asc(), movie.name.asc())
                 .fetch();
 
     }
 
     public Double findAverageGradeByMovieName(Session session, String movieName, String producer) {
-
         return new JPAQuery<Double>(session)
                 .select(review.grade.avg())
                 .from(review)
@@ -88,8 +85,7 @@ public class MovieDaoDsl {
 
     }
 
-    public List<com.querydsl.core.Tuple> findMovieNameByAvgGradeOrderedByMovieName(Session session) {
-
+    public List<Tuple> findMovieNameByAvgGradeOrderedByMovieName(Session session) {
         return new JPAQuery<com.querydsl.core.Tuple>(session)
                 .select(movie.name, review.grade.avg())
                 .from(movie)
@@ -101,7 +97,6 @@ public class MovieDaoDsl {
     }
 
     public List<Tuple> findSetOfMoviesWhereAvgGradeIsMoreThenAvgGradeOfAllMoviesOrderedByName(Session session) {
-
         return new JPAQuery<Tuple>(session)
                 .select(movie, review.grade.avg())
                 .from(movie)
@@ -117,7 +112,7 @@ public class MovieDaoDsl {
 
     }
 
-    public static MovieDaoDsl getInstance() {
+    public static MovieDaoQueryDsl getInstance() {
         return INSTANCE;
     }
 }

@@ -1,11 +1,9 @@
 package integretation;
 
-import com.example.dao.MovieDao;
-import com.example.dao.MovieDaoDsl;
-import com.example.dto.MovieDto;
+import com.example.dao.MovieDaoQueryDsl;
+import com.example.dto.ReviewFilter;
 import com.example.entity.Actor;
 import com.example.entity.Movie;
-import com.example.entity.MovieActor;
 import com.example.entity.Review;
 import com.querydsl.core.Tuple;
 import lombok.Cleanup;
@@ -22,13 +20,13 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_METHOD;
 
-@TestInstance(PER_CLASS)
-public class MovieDaoDslTestIT {
+@TestInstance(PER_METHOD)
+public class MovieDaoQueryDslTestIT {
 
     private final SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
-    private final MovieDaoDsl movieDaoDsl = MovieDaoDsl.getInstance();
+    private final MovieDaoQueryDsl movieDaoQueryDsl = MovieDaoQueryDsl.getInstance();
 
     @BeforeAll
     public void initDb() {
@@ -45,7 +43,7 @@ public class MovieDaoDslTestIT {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        List<Movie> results = movieDaoDsl.findAll(session);
+        List<Movie> results = movieDaoQueryDsl.findAll(session);
         assertThat(results).hasSize(3);
 
         List<String> names = results.stream().map(Movie::name).collect(toList());
@@ -59,7 +57,7 @@ public class MovieDaoDslTestIT {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        List<Movie> results = movieDaoDsl.findByName(session, "SinCity");
+        List<Movie> results = movieDaoQueryDsl.findByName(session, "SinCity");
 
         assertThat(results).hasSize(1);
         assertThat(results.get(0).name()).isEqualTo("SinCity");
@@ -73,7 +71,7 @@ public class MovieDaoDslTestIT {
         session.beginTransaction();
 
         int limit = 2;
-        List<Movie> results = movieDaoDsl.findLimitedMoviesOrderedByReleaseDate(session, limit);
+        List<Movie> results = movieDaoQueryDsl.findLimitedMoviesOrderedByReleaseDate(session, limit);
         assertThat(results).hasSize(limit);
 
         List<String> names = results.stream().map(Movie::name).collect(toList());
@@ -87,25 +85,25 @@ public class MovieDaoDslTestIT {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        List<Actor> results = movieDaoDsl.findAllActorsByMovieName(session, "LOK");
+        List<Actor> results = movieDaoQueryDsl.findAllActorsByMovieName(session, "KingdomOfHeaven");
         assertThat(results).hasSize(1);
 
-        List<String> names = results.stream().map(Actor::name).collect(toList());
-        assertThat(names).containsExactlyInAnyOrder("Anton Kabernik");
+        List<String> names = results.stream().map(Actor::getName).collect(toList());
+        assertThat(names).containsExactlyInAnyOrder(".....");
 
         session.getTransaction().commit();
-/*        Денис привет, этот тест я не смог сделать, пробовал многи варианты через <Movie>, <MovieActor>
-          Комбинировал их но ничего не выходит(Делал это в DAO). Все ломается когда проверяется размер, expected = 1 but actual = 0
-          Может ты поможешь? (В тесте DSL таже ситуация)*/
 
     }
 
     @Test
-    void findAllPaymentsByCompanyName() {
+    void findAllReviewByMovieName() {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        List<Review> reviews = movieDaoDsl.findAllReviewByMovieName(session, "KingdomOfHeaven");
+        ReviewFilter filter = ReviewFilter.builder()
+                .movieName("KingdomOfHeaven")
+                .build();
+        List<Review> reviews = movieDaoQueryDsl.findAllReviewByMovieName(session, filter);
         assertThat(reviews).hasSize(5);
 
         List<Integer> grades = reviews.stream().map(Review::getGrade).collect(toList());
@@ -119,7 +117,7 @@ public class MovieDaoDslTestIT {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Double averageGrade = movieDaoDsl.findAverageGradeByMovieName(session, "KingdomOfHeaven", "1");
+        Double averageGrade = movieDaoQueryDsl.findAverageGradeByMovieName(session, "KingdomOfHeaven", "1");
         assertThat(averageGrade).isEqualTo(10);
 
         session.getTransaction().commit();
@@ -130,7 +128,7 @@ public class MovieDaoDslTestIT {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        List<com.querydsl.core.Tuple> results = movieDaoDsl.findMovieNameByAvgGradeOrderedByMovieName(session);
+        List<com.querydsl.core.Tuple> results = movieDaoQueryDsl.findMovieNameByAvgGradeOrderedByMovieName(session);
         assertThat(results).hasSize(3);
 
         List<String> movNames = results.stream().map(it -> it.get(0, String.class)).collect(toList());
@@ -147,7 +145,7 @@ public class MovieDaoDslTestIT {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        List<Tuple> results = movieDaoDsl.findSetOfMoviesWhereAvgGradeIsMoreThenAvgGradeOfAllMoviesOrderedByName(session);
+        List<Tuple> results = movieDaoQueryDsl.findSetOfMoviesWhereAvgGradeIsMoreThenAvgGradeOfAllMoviesOrderedByName(session);
         assertThat(results).hasSize(2);
 
         List<String> names = results.stream().map(r -> r.get(0, Movie.class).name()).collect(toList());

@@ -24,8 +24,9 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_METHOD;
 
-@TestInstance(PER_CLASS)
+@TestInstance(PER_METHOD)
 public class MovieDaoTestIT {
 
     private final SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
@@ -87,11 +88,13 @@ public class MovieDaoTestIT {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        List<MovieActor> results = movieDao.findAllActorsByMovieName(session, "LOK");
+
+        List<Actor> results = movieDao.findAllActorsByMovieName(session, "KingdomOfHeaven");
         assertThat(results).hasSize(1);
 
-        List<String> names = results.stream().map(MovieActor::actorName).collect(toList());
-        assertThat(names).containsExactlyInAnyOrder("Anton Kabernik");
+        List<String> names = results.stream().map(Actor::getName).collect(toList());
+
+        assertThat(names).containsExactlyInAnyOrder("Nikita");
 
         session.getTransaction().commit();
     }
