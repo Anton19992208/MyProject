@@ -1,4 +1,4 @@
-package dao;
+package springTest.ITTests;
 
 import com.example.dao.ActorRepository;
 import com.example.dao.MovieActorRepository;
@@ -7,10 +7,8 @@ import com.example.entity.Actor;
 import com.example.entity.Movie;
 import com.example.entity.MovieActor;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
-import util.HibernateTestUtil;
-import util.ProxySessionInitializer;
+import springTest.configuration.ApplicationContext;
 import util.TestUtil;
 
 import java.util.List;
@@ -19,13 +17,12 @@ import java.util.Optional;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ActorRepositoryTestIT  {
+public class ActorTestIT {
 
-    private final SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
-    private final Session session = ProxySessionInitializer.createProxySession(sessionFactory);
-    private final MovieRepository movieRepository = new MovieRepository(session);
-    private final ActorRepository actorRepository = new ActorRepository(session);
-    private final MovieActorRepository movieActorRepository = new MovieActorRepository(session);
+    private static final MovieRepository movieRepository = ApplicationContext.getMovieRepository();
+    private static final ActorRepository actorRepository = ApplicationContext.getActorRepository();
+    private static final MovieActorRepository movieActorRepository = ApplicationContext.getMovieActorRepository();
+    private static final Session session = (Session) ApplicationContext.getEntityManager();
 
     @Test
     void shouldCreateActor() {
@@ -41,7 +38,7 @@ public class ActorRepositoryTestIT  {
         actorRepository.save(actor);
 
         assertThat(actor.getId()).isNotNull();
-        session.getTransaction().rollback();
+
     }
 
     @Test
@@ -85,7 +82,7 @@ public class ActorRepositoryTestIT  {
     }
 
     @Test
-    void shouldFindById() {
+    void shouldFindById(){
         session.beginTransaction();
         Actor actualActor = TestUtil.getActor();
         actorRepository.save(actualActor);
@@ -115,5 +112,4 @@ public class ActorRepositoryTestIT  {
         assertThat(actorNames).containsExactlyInAnyOrder("Robert", "Grom");
         session.getTransaction().rollback();
     }
-
 }

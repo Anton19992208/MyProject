@@ -1,14 +1,12 @@
-package dao;
+package springTest.ITTests;
 
 import com.example.dao.ReviewRepository;
 import com.example.dao.UserRepository;
 import com.example.entity.Review;
 import com.example.entity.User;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
-import util.HibernateTestUtil;
-import util.ProxySessionInitializer;
+import springTest.configuration.ApplicationContext;
 import util.TestUtil;
 
 import java.util.List;
@@ -17,12 +15,11 @@ import java.util.Optional;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserRepositoryTestIT  {
+public class UserTestIT {
 
-    private final SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
-    private final Session session = ProxySessionInitializer.createProxySession(sessionFactory);
-    private final UserRepository userRepository = new UserRepository(session);
-    private final ReviewRepository reviewRepository = new ReviewRepository(session);
+    public static final UserRepository userRepository = ApplicationContext.getUserRepository();
+    public static final ReviewRepository reviewRepository = ApplicationContext.getReviewRepository();
+    public static final Session session = (Session) ApplicationContext.getEntityManager();
 
     @Test
     void shouldCreateUser() {
@@ -85,7 +82,6 @@ public class UserRepositoryTestIT  {
 
         assertThat(expectedUser.get().getId()).isEqualTo(actualUser.getId());
         session.getTransaction().rollback();
-
     }
 
     @Test
@@ -104,15 +100,4 @@ public class UserRepositoryTestIT  {
         session.getTransaction().rollback();
     }
 
-
 }
-
-
-
-
-
-
-
-
-
-

@@ -23,8 +23,8 @@ public abstract class DaoRepository<K extends Serializable, E extends BaseEntity
         return entity;
     }
 
-    public void delete(K id) {
-        entityManager.remove(entityManager.find(clazz, id));
+    public void delete(E entity) {
+        entityManager.remove(entity);
         entityManager.flush();
     }
 

@@ -1,14 +1,12 @@
-package dao;
+package springTest.ITTests;
 
 import com.example.dao.MovieRepository;
 import com.example.dao.ReviewRepository;
 import com.example.entity.Movie;
 import com.example.entity.Review;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
-import util.HibernateTestUtil;
-import util.ProxySessionInitializer;
+import springTest.configuration.ApplicationContext;
 import util.TestUtil;
 
 import java.util.List;
@@ -17,12 +15,11 @@ import java.util.Optional;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReviewRepositoryTestIT  {
+public class ReviewTestIT {
 
-    private final SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
-    private final Session session = ProxySessionInitializer.createProxySession(sessionFactory);
-    private final ReviewRepository reviewRepository = new ReviewRepository(session);
-    private final MovieRepository movieRepository = new MovieRepository(session);
+    private static final ReviewRepository reviewRepository = ApplicationContext.getReviewRepository();
+    private static final MovieRepository movieRepository = ApplicationContext.getMovieRepository();
+    private static final Session session = (Session) ApplicationContext.getEntityManager();
 
     @Test
     void shouldCreateReview(){
@@ -73,7 +70,6 @@ public class ReviewRepositoryTestIT  {
         var updatedReview = session.get(Review.class, review.getId());
         assertThat(updatedReview.getId()).isEqualTo(review.getId());
         session.getTransaction().rollback();
-
     }
 
     @Test
@@ -105,11 +101,5 @@ public class ReviewRepositoryTestIT  {
         assertThat(reviewGrades).containsExactlyInAnyOrder(9 ,8);
         session.getTransaction().rollback();
     }
+
 }
-
-
-
-
-
-
-

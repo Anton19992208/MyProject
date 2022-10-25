@@ -3,9 +3,7 @@ package integretation;
 import com.example.dto.MovieDto;
 import com.example.dao.MovieDao;
 import com.example.entity.Actor;
-import com.example.entity.Genre;
 import com.example.entity.Movie;
-import com.example.entity.MovieActor;
 import com.example.entity.Review;
 import lombok.Cleanup;
 import org.hibernate.Session;
@@ -18,11 +16,9 @@ import util.HibernateTestUtil;
 import util.TestDataImporter;
 
 import javax.persistence.Tuple;
-import java.time.LocalDate;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_METHOD;
 

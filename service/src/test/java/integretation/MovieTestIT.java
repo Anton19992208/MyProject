@@ -3,7 +3,6 @@ package integretation;
 import com.example.entity.Actor;
 import com.example.entity.Movie;
 import com.example.entity.MovieActor;
-import com.example.entity.Review;
 import lombok.Cleanup;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,9 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import util.HibernateTestUtil;
 import util.TestUtil;
-
-import java.util.Collections;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_METHOD;
