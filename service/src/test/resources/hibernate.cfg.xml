@@ -16,11 +16,11 @@
         <property name="hibernate.current_session_context_class">thread</property>
 
 
-        <mapping class="com.example.entity.Movie"/>
-        <mapping class="com.example.entity.Actor"/>
-        <mapping class="com.example.entity.Review"/>
-        <mapping class="com.example.entity.User"/>
-        <mapping class="com.example.entity.MovieActor"/>
+        <mapping class="com.example.spring.entity.Movie"/>
+        <mapping class="com.example.spring.entity.Actor"/>
+        <mapping class="com.example.spring.entity.Review"/>
+        <mapping class="com.example.spring.entity.User"/>
+        <mapping class="com.example.spring.entity.MovieActor"/>
 
 
     </session-factory>
