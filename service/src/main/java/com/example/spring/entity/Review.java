@@ -28,7 +28,7 @@ public class Review implements BaseEntity<Long> {
 
     private String text;
 
-    private Integer grade;
+    private Double grade;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Movie movie;

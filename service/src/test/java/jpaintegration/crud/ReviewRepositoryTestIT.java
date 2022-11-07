@@ -1,4 +1,4 @@
-package integration;
+package jpaintegration.crud;
 
 import annotation.IT;
 import com.example.spring.entity.Movie;
@@ -6,7 +6,6 @@ import com.example.spring.entity.Review;
 import com.example.spring.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 import utils.TestUtil;
 
 import javax.persistence.EntityManager;
@@ -18,11 +17,9 @@ import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.withinPercentage;
 
-
 @IT
 @RequiredArgsConstructor
-@Transactional
-public class ReviewRepositoryIT {
+public class ReviewRepositoryTestIT {
 
     private final EntityManager entityManager;
     private final ReviewRepository reviewRepository;
@@ -62,9 +59,9 @@ public class ReviewRepositoryIT {
         review.setMovie(movie);
         reviewRepository.save(review);
 
-        review.setGrade(7);
+        review.setGrade(7.0);
         review.setMovie(newMovie);
-        reviewRepository.update(review);
+        reviewRepository.saveAndFlush(review);
         entityManager.flush();
         entityManager.clear();
 
@@ -94,7 +91,7 @@ public class ReviewRepositoryIT {
         List<Review> reviews = reviewRepository.findAll();
         assertThat(reviews).hasSize(2);
 
-        List<Integer> reviewGrades = reviews.stream().map(Review::getGrade).collect(toList());
-        assertThat(reviewGrades).containsExactlyInAnyOrder(9, 8);
+        List<Double> reviewGrades = reviews.stream().map(Review::getGrade).collect(toList());
+        assertThat(reviewGrades).containsExactlyInAnyOrder(9.0, 8.0);
     }
 }

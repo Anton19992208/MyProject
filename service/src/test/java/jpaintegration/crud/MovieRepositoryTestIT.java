@@ -1,4 +1,4 @@
-package integration;
+package jpaintegration.crud;
 
 import annotation.IT;
 import com.example.spring.entity.Actor;
@@ -7,11 +7,9 @@ import com.example.spring.entity.MovieActor;
 import com.example.spring.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 import utils.TestUtil;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,12 +19,10 @@ import static org.assertj.core.api.Assertions.withinPercentage;
 
 @IT
 @RequiredArgsConstructor
-@Transactional
-public class MovieRepositoryIT {
+public class MovieRepositoryTestIT {
 
     private final EntityManager entityManager;
     private final MovieRepository movieRepository;
-
 
     @Test
     void findById(){
@@ -76,7 +72,7 @@ public class MovieRepositoryIT {
         movie.setName("PulpFiction2");
         movie.setCountry("UN");
         movieActor.setActor(newActor);
-        movieRepository.update(movie);
+        movieRepository.saveAndFlush(movie);
         entityManager.flush();
         entityManager.clear();
 

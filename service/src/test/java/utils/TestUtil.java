@@ -42,7 +42,7 @@ public class TestUtil {
 
     public static Review getReview() {
         return Review.builder()
-                .grade(9)
+                .grade(9.0)
                 .text("Cool")
                 .build();
     }
@@ -74,12 +74,12 @@ public class TestUtil {
 
     public static Review getNewReview() {
         return Review.builder()
-                .grade(8)
+                .grade(8.0)
                 .text("Stupendous")
                 .build();
     }
 
-    public static User getNewUser(){
+    public static User getNewUser() {
         return User.builder()
                 .name("Joe")
                 .surname("biden")
@@ -88,5 +88,4 @@ public class TestUtil {
                 .role(Role.ADMIN)
                 .build();
     }
-
 }

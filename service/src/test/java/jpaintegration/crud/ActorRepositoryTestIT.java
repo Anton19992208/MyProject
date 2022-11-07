@@ -1,13 +1,13 @@
-package integration;
+package jpaintegration.crud;
 
 import annotation.IT;
 import com.example.spring.entity.Actor;
 import com.example.spring.entity.Movie;
 import com.example.spring.entity.MovieActor;
 import com.example.spring.repository.ActorRepository;
+import com.example.spring.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 import utils.TestUtil;
 
 import javax.persistence.EntityManager;
@@ -17,19 +17,16 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.withinPercentage;
-
 
 @IT
 @RequiredArgsConstructor
-@Transactional
-public class ActorRepositoryIT {
+public class ActorRepositoryTestIT {
 
-    private final EntityManager entityManager;
     private final ActorRepository actorRepository;
+    private final EntityManager entityManager;
 
     @Test
-    void shouldCreateActor() {
+    void saveActor(){
         Movie movie = TestUtil.getMovie();
         Actor actor = TestUtil.getActor();
         MovieActor movieActor = TestUtil.getMovieActor();
@@ -41,7 +38,7 @@ public class ActorRepositoryIT {
         entityManager.persist(actor);
 
         assertThat(actor.getId()).isNotNull();
-
+        assertThat(actor.getId()).isNotNull();
     }
 
     @Test
@@ -56,7 +53,6 @@ public class ActorRepositoryIT {
 
         assertThat(entityManager.find(Actor.class, actor.getId())).isNull();
     }
-
     @Test
     void shouldUpdateActor() {
         Actor actor = TestUtil.getActor();
@@ -72,7 +68,7 @@ public class ActorRepositoryIT {
 
         actor.setName("Adam");
         movieActor.setMovie(newMovie);
-        actorRepository.update(actor);
+        actorRepository.saveAndFlush(actor);
         entityManager.flush();
         entityManager.clear();
 
@@ -108,5 +104,4 @@ public class ActorRepositoryIT {
         List<String> actorNames = actors.stream().map(Actor::getName).collect(toList());
         assertThat(actorNames).containsExactlyInAnyOrder("Robert", "Grom");
     }
-
 }

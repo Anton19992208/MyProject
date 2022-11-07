@@ -1,4 +1,4 @@
-package integration;
+package jpaintegration.crud;
 
 import annotation.IT;
 import com.example.spring.entity.Review;
@@ -6,7 +6,6 @@ import com.example.spring.entity.User;
 import com.example.spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 import utils.TestUtil;
 
 import javax.persistence.EntityManager;
@@ -18,10 +17,10 @@ import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.withinPercentage;
 
+
 @IT
 @RequiredArgsConstructor
-@Transactional
-public class UserRepositoryIT {
+public class UserRepositoryTestIT {
 
     private final EntityManager entityManager;
     private final UserRepository userRepository;
@@ -65,7 +64,7 @@ public class UserRepositoryIT {
 
         user.setName("Boris");
         user.addReview(newReview);
-        userRepository.update(user);
+        userRepository.saveAndFlush(user);
 
         var updatedMovie = entityManager.find(User.class, user.getId());
         assertThat(updatedMovie.getId()).isEqualTo(user.getId());
@@ -96,5 +95,4 @@ public class UserRepositoryIT {
         List<String> userNames = users.stream().map(User::getName).collect(toList());
         assertThat(userNames).containsExactlyInAnyOrder("James", "Joe");
     }
-
 }

@@ -1,14 +1,11 @@
 package com.example.spring.repository;
 
 import com.example.spring.entity.Review;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 
-@Repository
-public class ReviewRepository extends RepositoryBase<Long, Review> {
+public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    public ReviewRepository(EntityManager entityManager) {
-        super(Review.class, entityManager);
-    }
 }
