@@ -2,14 +2,19 @@ package com.example.spring.repository;
 
 import com.example.spring.dto.MovieDto;
 import com.example.spring.entity.Movie;
+import com.example.spring.filter.MovieFilter;
 import com.querydsl.core.Tuple;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.repository.history.RevisionRepository;
 
 import java.util.List;
 
-public interface MovieRepository extends JpaRepository<Movie, Long> {
+public interface MovieRepository extends JpaRepository<Movie, Long>,
+        QuerydslPredicateExecutor<Movie>, FilterMovieRepository {
+
 
     @Query("select m from Movie m" +
             " where m.name = :name")

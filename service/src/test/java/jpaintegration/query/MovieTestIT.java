@@ -5,6 +5,7 @@ import com.example.spring.dto.MovieDto;
 import com.example.spring.entity.Movie;
 import com.example.spring.repository.MovieRepository;
 import com.querydsl.core.Tuple;
+import jpaintegration.IntegrationTestBase;
 import jpaintegration.util.DataImporter;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
@@ -18,9 +19,8 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@IT
 @RequiredArgsConstructor
-public class MovieTestIT {
+public class MovieTestIT extends IntegrationTestBase {
 
     private final EntityManager entityManager;
     private final MovieRepository movieRepository;
@@ -38,7 +38,7 @@ public class MovieTestIT {
         DataImporter.importData(entityManager);
         var page = PageRequest.of(0, 2, Sort.by("releaseDate"));
         var moviesOnEachPage = movieRepository.findLimitedMoviesOrderedByReleaseDate(page);
-        assertThat(moviesOnEachPage).hasSize(1);
+        assertThat(moviesOnEachPage).hasSize(2);
     }
 
     @Test

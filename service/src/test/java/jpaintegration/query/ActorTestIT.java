@@ -4,9 +4,11 @@ import annotation.IT;
 import com.example.spring.entity.Actor;
 import com.example.spring.entity.Movie;
 import com.example.spring.repository.ActorRepository;
+import jpaintegration.IntegrationTestBase;
 import jpaintegration.util.DataImporter;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.jdbc.Sql;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -15,9 +17,8 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@IT
 @RequiredArgsConstructor
-public class ActorTestIT {
+public class ActorTestIT extends IntegrationTestBase {
 
     private final ActorRepository actorRepository;
     private final EntityManager entityManager;

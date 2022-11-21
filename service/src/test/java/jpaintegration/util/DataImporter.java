@@ -1,6 +1,7 @@
 package jpaintegration.util;
 
 import com.example.spring.entity.Actor;
+import com.example.spring.entity.Genre;
 import com.example.spring.entity.Movie;
 import com.example.spring.entity.MovieActor;
 import com.example.spring.entity.Review;
@@ -26,11 +27,11 @@ public class DataImporter {
                 LocalDate.of(1949, 4, 8));
 
         Movie kingdomOfHeaven = saveMovie(entityManager, "KingdomOfHeaven",
-                LocalDate.of(1993, 12, 12), "1");
+                LocalDate.of(1993, 12, 12), "1", Genre.FANTASY);
         Movie sinCity = saveMovie(entityManager, "SinCity",
-                LocalDate.of(1994, 11, 11), "2");
+                LocalDate.of(1994, 11, 11), "2", Genre.COMEDY);
         Movie russianMovie = saveMovie(entityManager, "RussianMovie",
-                LocalDate.of(1990, 10, 10), "3");
+                LocalDate.of(1990, 10, 10), "3", Genre.FANTASY);
 
         MovieActor movieActor1 = saveMovieActor(entityManager, nik, kingdomOfHeaven);
         MovieActor movieActor2 = saveMovieActor(entityManager, ivan, sinCity);
@@ -71,11 +72,13 @@ public class DataImporter {
     private Movie saveMovie(EntityManager entityManager,
                             String name,
                             LocalDate releaseDate,
-                            String producer) {
+                            String producer,
+                            Genre genre) {
         Movie movie = Movie.builder()
                 .name(name)
                 .producer(producer)
                 .releaseDate(releaseDate)
+                .genre(genre)
                 .build();
         entityManager.persist(movie);
         return movie;

@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "error.whitelabel.enabled",
+      "type": "java.lang.String",
+      "description": "Description for error.whitelabel.enabled."
+  }
+] }

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies</title>
+</head>
+<body>
+<form action="/movies">
+     <label for="name">Name:
+         <input id="name" type="text" name="name">
+     </label>
+    <label for="producer">Producer:
+        <input id="producer" type="text" name="producer">
+    </label>
+    <button type="submit">Filter</button>
+</form>
+<div th:each="movie : ${movies}">
+    <a th:href="@{'/movies/' + ${movie.id}}" th:text="|${movie.id}. ${movie.name}|">Movie</a>
+</div>
+</body>
+</html>
