@@ -1,12 +1,18 @@
 package com.example.spring.http.contoller;
 
 import com.example.spring.dto.MovieCreateEditDto;
+import com.example.spring.dto.MovieReadDto;
+import com.example.spring.dto.PageResponse;
+import com.example.spring.dto.UserCreateEditDto;
 import com.example.spring.entity.Genre;
 import com.example.spring.entity.Role;
 import com.example.spring.filter.MovieFilter;
 import com.example.spring.mapper.MovieCreateEditMapper;
+import com.example.spring.mapper.MovieReadMapper;
 import com.example.spring.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,8 +35,14 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping
-    public String findAll(Model model, MovieFilter movieFilter) {
-        model.addAttribute("movies", movieService.findAll(movieFilter));
+    public String findAll(Model model,
+                          MovieFilter movieFilter,
+                          Pageable pageable,
+                          String name) {
+        Page<MovieReadDto> page = movieService.findAll(movieFilter, pageable);
+        model.addAttribute("movies", PageResponse.of(page));
+        model.addAttribute("filter", movieFilter);
+        model.addAttribute("byGrade", movieService.findAll(name, pageable));
         return "movie/movies";
     }
 
@@ -42,14 +54,6 @@ public class MovieController {
                     model.addAttribute("genres", Genre.values());
                     return "movie/movie";
                 }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-    }
-
-    @GetMapping("/registration")
-    public String registration(Model model, MovieCreateEditDto movie) {
-        model.addAttribute("movie", movie);
-        model.addAttribute("genres", Genre.values());
-        return "movie/registration";
     }
 
     @PostMapping
@@ -59,6 +63,13 @@ public class MovieController {
             return "redirect:/movies/registration";
         }
         return "redirect:/movies/" + movieService.create(movie).getId();
+    }
+
+    @GetMapping("/registration")
+    public String registration(Model model, MovieCreateEditDto movie) {
+        model.addAttribute("movie", movie);
+        model.addAttribute("genre", Genre.values());
+        return "movie/registration";
     }
 
     @PostMapping("/{id}/update")

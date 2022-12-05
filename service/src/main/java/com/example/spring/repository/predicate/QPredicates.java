@@ -1,16 +1,22 @@
 package com.example.spring.repository.predicate;
 
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
-import org.springframework.objenesis.ObjenesisBase;
+import com.querydsl.core.types.dsl.Expressions;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class QPredicates {
 
     private final List<Predicate> predicates = new ArrayList<>();
+
+    public static QPredicates builder(){
+        return new QPredicates();
+    }
 
     public <T> QPredicates add(T object, Function<T, Predicate> function){
         if(object != null){
@@ -26,5 +32,15 @@ public class QPredicates {
         return this;
     }
 
+    public Predicate build(){
+        return Optional.ofNullable(ExpressionUtils.allOf(predicates))
+                .orElseGet(() -> Expressions.asBoolean(true).isTrue());
+    }
+
+    public Predicate buildOr(){
+        return Optional.ofNullable(ExpressionUtils.anyOf(predicates))
+                .orElseGet(() -> Expressions.asBoolean(true).isTrue());
+    }
 
 }
+

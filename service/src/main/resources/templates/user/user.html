@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+<div th:insert="~{fragment :: header}" ></div>
+<form th:action="@{/users/{userId}/update(userId=${user.id})}" enctype="multipart/form-data" method="post" th:object="${user}">
+    <label for="name">Username:
+        <input id="name" type="text" name="name" th:value="*{name}">
+    </label><br>
+    <label for="surname">Surname:
+        <input id="surname" type="text" name="surname" th:value="*{surname}">
+    </label><br>
+<!--    <label for="password">Password:-->
+<!--        <input id="password" type="text" name="password" >-->
+<!--    </label><br>-->
+<!--    <label for="reviews">Reviews:-->
+<!--        <input id="reviews" type="text" name="reviews" th:value="*{reviews}">-->
+<!--    </label><br>-->
+    <label for="email">Email:
+        <input id="email" type="text" name="email" th:value="*{email}">
+    </label><br>
+    <div th:each="role : ${roles}">
+        <input th:id="${role}" type="radio" name="role" th:value="${role}" th:checked="${role == user.role}">
+        <label th:for="${role}" th:text="${role}">Role name</label>
+    </div>
+    <button type="submit">Update</button>
+</form>
+<form th:action="@{/users/{userId}/delete(userId=${user.id})}"  th:if="${user.role.name == 'ADMIN'}" method="post" >
+    <button type="submit">Delete</button>
+</form>
+</body>
+</html>

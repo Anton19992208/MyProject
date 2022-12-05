@@ -5,7 +5,7 @@
     <title>Movie</title>
 </head>
 <body>
-<form th:action="@{/movies/{movieId}/update(movieId=${movie.id})}" method="post" th:object="${movie}">
+<form th:action="@{/movies/{movieId}/update(movieId=${movie.id})}" enctype="multipart/form-data" method="post" th:object="${movie}">
     <label for="name">MovieName:
         <input id="name" type="text" name="name" th:value="*{name}">
     </label><br>
@@ -18,9 +18,15 @@
     <label for="country">Country:
         <input id="country" type="text" name="country" th:value="*{country}">
     </label><br>
+    <label for="image">Image:
+        <input id="image" type="file" name="image" >
+    </label><br>
+    <div th:if="${movie.image}">
+        <img th:src="@{/api/v1/movies/{movieId}/avatar(movieId=${movie.id})}" alt="Movie image">
+    </div>
     <div th:each="genre : ${genres}">
         <input th:id="${genre}" type="radio" name="genre" th:value="${genre}" th:checked="${genre == movie.genre}">
-        <label th:for="${genre}" th:text="${genre}">Role name</label>
+        <label th:for="${genre}" th:text="${genre}">Genre name</label>
     </div>
     <button type="submit">Update</button>
 </form>
