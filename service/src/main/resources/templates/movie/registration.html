@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+<form th:action="@{/movies/}" method="post" th:object="${movie}">
+    <label for="name">Name:
+         <input id="name" type="text" name="name" th:value="*{name}">
+    </label><br>
+    <label for="producer">Producer:
+        <input id="producer" type="text" name="producer" th:value="*{producer}">
+    </label><br>
+    <label for="country">Country:
+        <input id="country" type="text" name="country" th:value="*{country}">
+    </label><br>
+    <label for="releaseDate">ReleaseDate
+        <input id="releaseDate" type="date" name="releaseDate" th:value="*{releaseDate}">
+    </label><br>
+    <div th:each="genre : ${genres}">
+        <input th:id="${genre}" type="radio" name="genre" th:value="${genre}" th:checked="${genre == movie.genre}">
+        <label th:for="${genre}" th:text="${genre}">Genre name</label>
+    </div>
+    <button type="submit">Register</button>
+</form>
+</body>
+</html>
