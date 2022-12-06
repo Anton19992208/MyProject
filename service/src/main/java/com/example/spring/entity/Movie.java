@@ -48,6 +48,8 @@ public class Movie implements BaseEntity<Long> {
 
     private String country;
 
+    private String image;
+
     @Enumerated(EnumType.STRING)
     private Genre genre;
 

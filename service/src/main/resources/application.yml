@@ -18,4 +18,12 @@ spring:
       show_sql: true
       format_sql: true
     open-in-view: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 750422232566-hn1ad53cde6ep8967bbbpov7kn291i12.apps.googleusercontent.com
+            clientSecret: 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
+            redirectUri: http://localhost:8080/login/oauth2/code/google
 

@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS  idk_user
     name     VARCHAR(128) NOT NULL,
     surname  VARCHAR(128) NOT NULL,
     role     VARCHAR      NOT NULL,
-    password VARCHAR(128) NOT NULL UNIQUE,
     email    VARCHAR      NOT NULL UNIQUE
 
     );

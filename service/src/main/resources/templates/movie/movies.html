@@ -5,16 +5,29 @@
     <title>Movies</title>
 </head>
 <body>
+<div th:insert="~{fragment :: header}"></div>
 <form action="/movies">
      <label for="name">Name:
-         <input id="name" type="text" name="name">
+         <input id="name" type="text" name="name" th:value="${filter.name}">
      </label>
-    <label for="producer">Producer:
-        <input id="producer" type="text" name="producer">
+    <label for="releaseDate">ReleaseDate:
+        <input id="releaseDate" type="date" name="producer" th:value="${filter.releaseDate}">
     </label>
+    <div th:each="genre : ${genres}">
+        <input th:id="${genre}" type="radio" name="genre" th:value="${genre}" th:checked="${genre == movie.genre}">
+        <label th:for="${genre}" th:text="${genre}">Role name</label>
+    </div>
+    <div>
+        <label for="page">Page:
+            <input id="page" type="number" name="page" th:value="${movies.metadata.page}">
+        </label>
+        <label for="size">Size:
+            <input id="size" type="number" name="size" th:value="${movies.metadata.size}">
+        </label>
+    </div>
     <button type="submit">Filter</button>
 </form>
-<div th:each="movie : ${movies}">
+<div th:each="movie : ${movies.content}">
     <a th:href="@{'/movies/' + ${movie.id}}" th:text="|${movie.id}. ${movie.name}|">Movie</a>
 </div>
 </body>

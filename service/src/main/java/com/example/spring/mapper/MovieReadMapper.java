@@ -18,7 +18,8 @@ public class MovieReadMapper implements Mapper<Movie, MovieReadDto> {
                 object.getProducer(),
                 object.getReleaseDate(),
                 object.getCountry(),
-                object.getGenre()
+                object.getGenre(),
+                object.getImage()
         );
     }
 }
