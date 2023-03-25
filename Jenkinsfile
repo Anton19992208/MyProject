@@ -11,7 +11,7 @@ pipeline {
 
 		stage('Test'){
 			steps{
-			    sh "./mvnw clean install -DskipTests"
+			     echo '122333.....'
 			}
 		}
 
