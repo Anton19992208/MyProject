@@ -1,5 +1,10 @@
-
 node {
+  
+  environment {
+		mavenHome = tool 'Maven'
+	}
+
+  
   stage("Clone the project") {
     git branch: 'master', url: 'https://github.com/Anton19992208/MyProject'
   }
