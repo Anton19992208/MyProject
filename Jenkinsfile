@@ -5,19 +5,19 @@ pipeline {
 
 		stage('Build'){
 			steps {
-				bat "mvn clean install -DskipTests"
+			    echo '122333.....'
 			}
 		}
 
 		stage('Test'){
 			steps{
-				bat "mvn test"
+			    sh "./mvnw clean install -DskipTests"
 			}
 		}
 
 		stage('Deploy') {
 			steps {
-			    bat "mvn jar:jar deploy:deploy"
+			     echo '122333.....'
 			}
 		}
 	}
