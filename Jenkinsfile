@@ -1,11 +1,15 @@
 pipeline {
 	agent any
+	tools{
+            maven		 
+	}
 
 	stages {
 
 		stage('Build'){
 			steps {
 			    echo '122333.....'
+		            sh "mvn install"
 			}
 		}
 
