@@ -5,10 +5,6 @@ pipeline {
             maven 'Maven'
 	}
 
-	tools {
-		jdk 'java-17'
-	}
-
 	stages {
 
 		stage('Build'){
