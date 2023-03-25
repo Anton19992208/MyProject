@@ -20,8 +20,8 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <lombok.version>1.18.22</lombok.version>
         <junit5.version>5.8.2</junit5.version>
         <querydsl.version>5.0.0</querydsl.version>
